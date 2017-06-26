@@ -62,12 +62,12 @@ Examples for the QtPdf library
 %endif
 %{_libdir}/qt5/bin/syncqt.pl -version `pkg-config --modversion Qt5Core`
 2to3 -w src/3rdparty/gyp2pri.py
-qmake
+qmake-qt5
 
 %build
 %make
 cd examples/pdf/pdfviewer
-qmake
+qmake-qt5
 %make
 
 %install
