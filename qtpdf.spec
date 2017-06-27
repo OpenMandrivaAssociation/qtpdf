@@ -25,6 +25,7 @@ BuildRequires: qmake5
 BuildRequires: cmake(Qt5Core)
 BuildRequires: cmake(Qt5Gui)
 BuildRequires: cmake(Qt5Widgets)
+BuildRequires: cmake(Qt5Network)
 BuildRequires: python
 
 %description
@@ -90,6 +91,7 @@ TryExec=pdfviewer
 Exec=pdfviewer %F
 MimeType=application/pdf;application/x-pdf;text/pdf;text/x-pdf;image/pdf;image/x-pdf;
 EOF
+chmod +x %{buildroot}%{_datadir}/applications/*.desktop
 
 %files
 %{_bindir}/*
