@@ -14,7 +14,7 @@ Source0: %{name}-%{git}.tar.xz
 # cd pdfium ; git archive -o pdfium-%{git}.tar --prefix src/3rdparty/pdfium/ 8d5315004
 Source1: pdfium-%{git}.tar.xz
 %else
-Release: 1
+Release: 2
 Source0: %{name}-%{version}.tar.xz
 %endif
 Summary: Qt library for PDF rendering
