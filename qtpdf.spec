@@ -21,6 +21,11 @@ Summary: Qt library for PDF rendering
 URL: http://blog.qt.io/blog/2017/01/30/new-qtpdf-qtlabs-module/
 License: LGPLv3
 Group: System/Libraries
+#Patch0:	fix-c++17-issue.patch
+#Patch1:	fix-register-keyword-build-failure.patch
+Patch2:	fix-missing-typedef-in-lcms2.patch
+#Patch3: fix-renamed-types.patch
+Patch4: fix-more-renamed-types.patch
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5Core)
 BuildRequires: cmake(Qt5Gui)
@@ -61,14 +66,23 @@ Examples for the QtPdf library
 %else
 %setup -q -a 1
 %endif
+
+rm -r  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/*.h
+#rm  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/*.patch
+# rm -r  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src
+cp  /usr/include/lcms2.h %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
+cp  /usr/include/lcms2_plugin.h %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2_plugin.h 
+%autopatch -p2
+
 %{_libdir}/qt5/bin/syncqt.pl -version `pkg-config --modversion Qt5Core`
 2to3 -w src/3rdparty/gyp2pri.py
 qmake-qt5
 
 %build
-%make
+
+%make 
 cd examples/pdf/pdfviewer
-qmake-qt5
+qmake-qt5 CXXFLAGS="%{optflags} -Wno-error=register" 
 %make
 
 %install
