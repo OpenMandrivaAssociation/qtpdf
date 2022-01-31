@@ -1,0 +1,158 @@
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmscgats.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmscgats.c
+index 9017435..12dc043 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmscgats.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmscgats.c
+@@ -2291,7 +2291,7 @@ cmsBool IsMyFile(const char* FileName)
+ // ---------------------------------------------------------- Exported routines
+ 
+ 
+-cmsHANDLE  CMSEXPORT cmsIT8LoadFromMem(cmsContext ContextID, void *Ptr, cmsUInt32Number len)
++cmsHANDLE  CMSEXPORT cmsIT8LoadFromMem(cmsContext ContextID, const void *Ptr, cmsUInt32Number len)
+ {
+     cmsHANDLE hIT8;
+     cmsIT8*  it8;
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsgamma.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsgamma.c
+index 97aeb7c..d34d25e 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsgamma.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsgamma.c
+@@ -617,7 +617,7 @@ const cmsUInt16Number* CMSEXPORT cmsGetToneCurveEstimatedTable(const cmsToneCurv
+ 
+ // Create an empty gamma curve, by using tables. This specifies only the limited-precision part, and leaves the
+ // floating point description empty.
+-cmsToneCurve* CMSEXPORT cmsBuildTabulatedToneCurve16(cmsContext ContextID, cmsInt32Number nEntries, const cmsUInt16Number Values[])
++cmsToneCurve* CMSEXPORT cmsBuildTabulatedToneCurve16(cmsContext ContextID, cmsUInt32Number nEntries, const cmsUInt16Number Values[])
+ {
+     return AllocateToneCurveStruct(ContextID, nEntries, 0, NULL, Values);
+ }
+@@ -631,8 +631,7 @@ int EntriesByGamma(cmsFloat64Number Gamma)
+ 
+ 
+ // Create a segmented gamma, fill the table
+-cmsToneCurve* CMSEXPORT cmsBuildSegmentedToneCurve(cmsContext ContextID,
+-                                                   cmsInt32Number nSegments, const cmsCurveSegment Segments[])
++cmsToneCurve* CMSEXPORT cmsBuildSegmentedToneCurve(cmsContext ContextID, cmsUInt32Number nSegments, const cmsCurveSegment Segments[])
+ {
+     int i;
+     cmsFloat64Number R, Val;
+@@ -922,7 +921,7 @@ int GetInterval(cmsFloat64Number In, const cmsUInt16Number LutTable[], const str
+ }
+ 
+ // Reverse a gamma table
+-cmsToneCurve* CMSEXPORT cmsReverseToneCurveEx(cmsInt32Number nResultSamples, const cmsToneCurve* InCurve)
++cmsToneCurve* CMSEXPORT cmsReverseToneCurveEx(cmsUInt32Number nResultSamples, const cmsToneCurve* InCurve)
+ {
+     cmsToneCurve *out;
+     cmsFloat64Number a = 0, b = 0, y, x1, y1, x2, y2;
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsio0.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsio0.c
+index 5f9f08a..4a95911 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsio0.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsio0.c
+@@ -1697,7 +1697,7 @@ Error:
+ // raw data written does not exactly correspond with the raw data proposed to cmsWriteRaw data, but this approach allows
+ // to write a tag as raw data and the read it as handled.
+ 
+-cmsInt32Number CMSEXPORT cmsReadRawTag(cmsHPROFILE hProfile, cmsTagSignature sig, void* data, cmsUInt32Number BufferSize)
++cmsUInt32Number CMSEXPORT cmsReadRawTag(cmsHPROFILE hProfile, cmsTagSignature sig, void* data, cmsUInt32Number BufferSize)
+ {
+     _cmsICCPROFILE* Icc = (_cmsICCPROFILE*) hProfile;
+     void *Object;
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmslut.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmslut.c
+index 73e6726..abaece0 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmslut.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmslut.c
+@@ -1615,8 +1615,8 @@ cmsUInt32Number CMSEXPORT cmsPipelineStageCount(const cmsPipeline* lut)
+ 
+ // This function may be used to set the optional evaluator and a block of private data. If private data is being used, an optional
+ // duplicator and free functions should also be specified in order to duplicate the LUT construct. Use NULL to inhibit such functionality.
+-void CMSEXPORT _cmsPipelineSetOptimizationParameters(cmsPipeline* Lut,
+-                                        _cmsOPTeval16Fn Eval16,
++CMSAPI void CMSEXPORT _cmsPipelineSetOptimizationParameters(cmsPipeline* Lut,
++                                        _cmsPipelineEval16Fn Eval16,
+                                         void* PrivateData,
+                                         _cmsFreeUserDataFn FreePrivateDataFn,
+                                         _cmsDupUserDataFn  DupPrivateDataFn)
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsopt.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsopt.c
+index f885ef3..896eb41 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsopt.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsopt.c
+@@ -678,7 +678,7 @@ Error:
+ 
+     if (DataSetIn == NULL && DataSetOut == NULL) {
+ 
+-        _cmsPipelineSetOptimizationParameters(Dest, (_cmsOPTeval16Fn) DataCLUT->Params->Interpolation.Lerp16, DataCLUT->Params, NULL, NULL);
++        _cmsPipelineSetOptimizationParameters(Dest, (_cmsPipelineEval16Fn) DataCLUT->Params->Interpolation.Lerp16, DataCLUT->Params, NULL, NULL);
+     }
+     else {
+ 
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsvirt.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsvirt.c
+index b324c99..c1d9e5b 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsvirt.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsvirt.c
+@@ -724,13 +724,13 @@ int bchswSampler(register const cmsUInt16Number In[], register cmsUInt16Number O
+ // contrast, Saturation and white point displacement
+ 
+ cmsHPROFILE CMSEXPORT cmsCreateBCHSWabstractProfileTHR(cmsContext ContextID,
+-    int nLUTPoints,
++    cmsUInt32Number nLUTPoints,
+     cmsFloat64Number Bright,
+     cmsFloat64Number Contrast,
+     cmsFloat64Number Hue,
+     cmsFloat64Number Saturation,
+-    int TempSrc,
+-    int TempDest)
++    cmsUInt32Number TempSrc,
++    cmsUInt32Number TempDest)
+ {
+     cmsHPROFILE hICC;
+     cmsPipeline* Pipeline;
+@@ -804,13 +804,13 @@ Error:
+ }
+ 
+ 
+-CMSAPI cmsHPROFILE   CMSEXPORT cmsCreateBCHSWabstractProfile(int nLUTPoints,
++CMSAPI cmsHPROFILE   CMSEXPORT cmsCreateBCHSWabstractProfile(cmsUInt32Number nLUTPoints,
+                                                              cmsFloat64Number Bright,
+                                                              cmsFloat64Number Contrast,
+                                                              cmsFloat64Number Hue,
+                                                              cmsFloat64Number Saturation,
+-                                                             int TempSrc,
+-                                                             int TempDest)
++                                                             cmsUInt32Number TempSrc,
++                                                             cmsUInt32Number TempDest)
+ {
+     return cmsCreateBCHSWabstractProfileTHR(NULL, nLUTPoints, Bright, Contrast, Hue, Saturation, TempSrc, TempDest);
+ }
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsxform.c b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsxform.c
+index eddb9bd..ab0a07c 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsxform.c
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/cmsxform.c
+@@ -534,14 +534,14 @@ cmsBool  _cmsRegisterTransformPlugin(cmsContext ContextID, cmsPluginBase* Data)
+     }
+ 
+     // Factory callback is required
+-    if (Plugin ->Factory == NULL) return FALSE;
++    if (Plugin ->factories.legacy_xform == NULL) return FALSE;
+ 
+ 
+     fl = (_cmsTransformCollection*) _cmsPluginMalloc(ContextID, sizeof(_cmsTransformCollection));
+     if (fl == NULL) return FALSE;
+ 
+     // Copy the parameters
+-    fl ->Factory = Plugin ->Factory;
++    fl ->Factory = Plugin ->factories.legacy_xform;
+ 
+     // Keep linked list
+     fl ->Next = ctx->TransformCollection;
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/lcms2_internal.h b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/lcms2_internal.h
+index cc76d48..c36c933 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/lcms2_internal.h
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src/lcms2_internal.h
+@@ -842,7 +842,7 @@ struct _cmsPipeline_struct {
+     // Data & evaluators
+     void *Data;
+ 
+-   _cmsOPTeval16Fn         Eval16Fn;
++   _cmsPipelineEval16Fn    Eval16Fn;
+    _cmsPipelineEvalFloatFn EvalFloatFn;
+    _cmsFreeUserDataFn      FreeDataFn;
+    _cmsDupUserDataFn       DupDataFn;

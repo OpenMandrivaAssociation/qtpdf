@@ -1,0 +1,12 @@
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
+index 941f8cc..88bb85e 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
+@@ -1539,6 +1539,7 @@ CMSAPI cmsBool           CMSEXPORT cmsCloseIOhandler(cmsIOHANDLER* io);
+ // MD5 message digest --------------------------------------------------------------------------------------------------
+ 
+ CMSAPI cmsBool           CMSEXPORT cmsMD5computeID(cmsHPROFILE hProfile);
++CMSAPI cmsBool			 CMSEXPORT cmsMD5computeIDExt(const void* buf, unsigned long size, unsigned char ProfileID[16]);
+ 
+ // Profile high level functions ------------------------------------------------------------------------------------------
+ 
