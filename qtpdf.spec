@@ -6,7 +6,7 @@
 Name: qtpdf
 Version: 0.0
 %if 0%{?git}
-Release: 0.%{git}.1
+Release: 0.%{git}.2
 # git clone git://code.qt.io/qt-labs/qtpdf
 # cd qtpdf ; git archive -o qtpdf-%{git}.tar --prefix qtpdf-%{git}/ origin/dev
 Source0: %{name}-%{git}.tar.xz
