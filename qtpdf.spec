@@ -32,6 +32,7 @@ BuildRequires: cmake(Qt5Gui)
 BuildRequires: cmake(Qt5Widgets)
 BuildRequires: cmake(Qt5Network)
 BuildRequires: python
+BuildRequires: pkgconfig(lcms2)
 
 %description
 Qt library for PDF rendering
