@@ -21,11 +21,11 @@ Summary: Qt library for PDF rendering
 URL: http://blog.qt.io/blog/2017/01/30/new-qtpdf-qtlabs-module/
 License: LGPLv3
 Group: System/Libraries
-#Patch0:	fix-c++17-issue.patch
-#Patch1:	fix-register-keyword-build-failure.patch
-Patch2:	fix-missing-typedef-in-lcms2.patch
-#Patch3: fix-renamed-types.patch
-Patch4: fix-more-renamed-types.patch
+
+Patch0:	disable-register-keyword.patch
+Patch1:	fix-missing-typedef-in-lcms2.patch
+Patch2: fix-more-renamed-types.patch
+
 BuildRequires: qmake5
 BuildRequires: cmake(Qt5Core)
 BuildRequires: cmake(Qt5Gui)
@@ -69,8 +69,6 @@ Examples for the QtPdf library
 %endif
 
 rm -r  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/*.h
-#rm  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/*.patch
-# rm -r  %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/src
 cp  /usr/include/lcms2.h %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
 cp  /usr/include/lcms2_plugin.h %{_builddir}/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2_plugin.h 
 %autopatch -p2

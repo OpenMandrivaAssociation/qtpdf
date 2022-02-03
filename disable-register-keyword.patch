@@ -1,0 +1,13 @@
+diff --git a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
+index ae63521..88bb85e 100644
+--- a/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
++++ b/qtpdf-20170626/src/3rdparty/pdfium/third_party/lcms2-2.6/include/lcms2.h
+@@ -62,7 +62,7 @@
+ // #define CMS_RELY_ON_WINDOWS_STATIC_MUTEX_INIT
+ 
+ // Uncomment this to remove the "register" storage class
+-// #define CMS_NO_REGISTER_KEYWORD 1
++#define CMS_NO_REGISTER_KEYWORD 1
+ 
+ // ********** End of configuration toggles ******************************
+ 
