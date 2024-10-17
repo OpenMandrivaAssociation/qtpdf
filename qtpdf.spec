@@ -18,7 +18,7 @@ Release: 3
 Source0: %{name}-%{version}.tar.xz
 %endif
 Summary: Qt library for PDF rendering
-URL: http://blog.qt.io/blog/2017/01/30/new-qtpdf-qtlabs-module/
+URL: https://blog.qt.io/blog/2017/01/30/new-qtpdf-qtlabs-module/
 License: LGPLv3
 Group: System/Libraries
 
